@@ -17,30 +17,56 @@ package com.example.androiddevchallenge
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androiddevchallenge.countdowntimer.CountdownTimer
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
-class MainActivity : AppCompatActivity() {
+class CountdownActivity : AppCompatActivity() {
+    private val viewModel by viewModels<CountdownViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                CountDownTimerApp(
+                    viewModel.timerLabel,
+                    viewModel.status,
+                    viewModel::onNumPadButtonClicked,
+                    viewModel::onDeleteButtonClicked,
+                    viewModel::startTimer,
+                    viewModel::toggleTimer,
+                    viewModel::resetTimer
+                )
             }
         }
     }
 }
 
-// Start building your app here!
 @Composable
-fun MyApp() {
+fun CountDownTimerApp(
+    timerLabel: String,
+    status: CountdownViewModel.Status,
+    onNumButtonClick: (Int) -> Unit,
+    onDeleteButtonClick: () -> Unit,
+    onStartTimer: () -> Unit,
+    toggleTimer: () -> Unit,
+    stopTimer: () -> Unit,
+) {
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        CountdownTimer(
+            timerLabel,
+            status,
+            onNumButtonClick,
+            onDeleteButtonClick,
+            onStartTimer,
+            toggleTimer,
+            stopTimer
+        )
     }
 }
 
@@ -48,7 +74,7 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        CountDownTimerApp("00h 00m 00s", CountdownViewModel.Status.INPUT, {}, {}, {}, {}, {})
     }
 }
 
@@ -56,6 +82,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        CountDownTimerApp("00h 00m 00s", CountdownViewModel.Status.RUNNING, {}, {}, {}, {}, {})
     }
 }
