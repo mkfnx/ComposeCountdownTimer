@@ -93,8 +93,7 @@ class CountdownViewModel : ViewModel() {
     fun onNumPadButtonClicked(number: Int) {
         if (timerInputs.size == 0 && number == 0) {
             return
-        }
-        else if (timerInputs.size < 6) {
+        } else if (timerInputs.size < 6) {
             timerInputs.add(number)
 
             timerLabel = formatTime()
