@@ -57,7 +57,9 @@ fun CountDownTimerApp(
     toggleTimer: () -> Unit,
     stopTimer: () -> Unit,
 ) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(
+        color = MaterialTheme.colors.background
+    ) {
         CountdownTimer(
             timerLabel,
             status,
